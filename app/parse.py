@@ -38,7 +38,7 @@ def get_quotes_from_pages() -> list[Quote]:
 
     while True:
         page = requests.get(HOME_URL.format(page_number=counter))
-        if page.status_code != 200 or counter > 10:
+        if page.status_code != 200:
             return all_quotes_from_page
 
         soup = BeautifulSoup(page.content, "html.parser")
