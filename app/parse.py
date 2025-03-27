@@ -38,13 +38,14 @@ def get_quotes_from_pages() -> list[Quote]:
 
     while True:
         page = requests.get(HOME_URL.format(page_number=counter))
-        if page.status_code != 200:
-            return all_quotes_from_page
-
         soup = BeautifulSoup(page.content, "html.parser")
+
         quotes = soup.find_all("div", attrs={"class": "quote"})
         all_quotes_from_page.extend(get_quotes_data(quotes))
         counter += 1
+
+        if page.status_code != 200 or not soup.select("nav ul li.next"):
+            return all_quotes_from_page
 
 
 def main(output_csv_path: str) -> None:
